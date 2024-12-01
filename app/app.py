@@ -7,7 +7,7 @@ import palmerpenguins
 
 df = palmerpenguins.load_penguins()
 
-ui.page_opts(title="Penguins dashboard", fillable=True)
+#ui.page_opts(title="Penguins dashboard", fillable=True)
 
 
 with ui.sidebar(title="Filter controls"):
@@ -73,17 +73,28 @@ with ui.layout_column_wrap(fill=False):
 
 with ui.layout_columns():
     with ui.card(full_screen=True):
-        ui.card_header("Bill length and depth")
+        ui.card_header("Bill Length vs Bill Depth by Species")
 
+        # Render the plot for bill length and depth
         @render.plot
         def length_depth():
-            return sns.scatterplot(
+            # Create the scatter plot
+            plot = sns.scatterplot(
                 data=filtered_df(),
                 x="bill_length_mm",
                 y="bill_depth_mm",
-                hue="species",
+                hue="species"
             )
-
+            # Set the axis labels and title
+            plot.set(
+                xlabel = "Bill Length (mm)",
+                ylabel = "Bill Depth (mm)",
+            )
+            # Set the legend title
+            plot.legend(title="Species")
+            
+            return plot.figure
+        
     with ui.card(full_screen=True):
         ui.card_header("Penguin Data")
 
